@@ -4,7 +4,7 @@ include "root" {
 }
 
 terraform {
-  source = "git::https://github.com/PhilNel/infra-shared-lib.git//terraform/certificates?ref=develop"
+  source = "git::https://github.com/PhilNel/infra-shared-lib.git//terraform/certificates?ref=${local.base.shared_lib_version}"
 }
 
 locals {

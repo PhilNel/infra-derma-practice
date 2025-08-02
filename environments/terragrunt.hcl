@@ -17,6 +17,7 @@ locals {
   aws_region           = "af-south-1"
   environment          = "dev"
   project_name         = "nelskin-practice"
+  shared_lib_version   = "develop"
 
   practice_website_cloudfront_distribution_arn = "arn:aws:cloudfront::346975092227:distribution/E35ZYSNPLLS4CE"
 } 
