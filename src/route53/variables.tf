@@ -20,33 +20,14 @@ variable "production_ttl" {
   }
 }
 
-variable "squarespace_ip_addresses" {
-  description = "List of SquareSpace IP addresses for A records"
-  type        = list(string)
-
-  validation {
-    condition = alltrue([
-      for ip in var.squarespace_ip_addresses : can(regex("^\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}\\.\\d{1,3}$", ip))
-    ])
-    error_message = "All IP addresses must be valid IPv4 addresses."
-  }
-}
-
-variable "squarespace_cname_target" {
-  description = "SquareSpace CNAME target for www subdomain"
-  type        = string
-  default     = "ext-cust.squarespace.com"
-}
-
 variable "cloudfront_distribution_domain_name" {
   description = "CloudFront distribution domain name (for future use)"
   type        = string
 }
 
-variable "cloudfront_hosted_zone_id" {
-  description = "CloudFront hosted zone ID (constant: Z2FDTNDATAQYW2)"
+variable "nelskin_redirect_cloudfront_domain_name" {
+  description = "CloudFront domain name for nelskin.co.za redirect"
   type        = string
-  default     = "Z2FDTNDATAQYW2"
 }
 
 variable "aws_region" {

@@ -17,7 +17,8 @@ locals {
   aws_region           = "af-south-1"
   environment          = "dev"
   project_name         = "nelskin-practice"
-  shared_lib_version   = "develop"
-
+  shared_lib_version   = "v1.2.0"
+  artefact_bucket_name = "nelskin-practice-artefacts-dev-af-south-1"
+  
   practice_website_cloudfront_distribution_arn = "arn:aws:cloudfront::346975092227:distribution/E35ZYSNPLLS4CE"
 } 

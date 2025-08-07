@@ -16,24 +16,58 @@ data "aws_route53_zone" "nelskincare_zone" {
   name = "nelskincare.co.za"
 }
 
-# Existing domain - SquareSpace records
-resource "aws_route53_record" "root_domain_a_records" {
+# ============================================================================
+# Redirect nelskin.co.za domain to nelskincare.co.za domain using CloudFront
+# ============================================================================
+
+resource "aws_route53_record" "nelskin_redirect_root" {
   zone_id = data.aws_route53_zone.nelskin_zone.zone_id
   name    = data.aws_route53_zone.nelskin_zone.name
   type    = "A"
-  ttl     = var.migration_ttl
 
-  records = var.squarespace_ip_addresses
+  alias {
+    name                   = var.nelskin_redirect_cloudfront_domain_name
+    zone_id                = "Z2FDTNDATAQYW2"
+    evaluate_target_health = false
+  }
 }
 
-resource "aws_route53_record" "www_cname" {
+resource "aws_route53_record" "nelskin_redirect_www" {
   zone_id = data.aws_route53_zone.nelskin_zone.zone_id
   name    = "www.${data.aws_route53_zone.nelskin_zone.name}"
-  type    = "CNAME"
-  ttl     = var.migration_ttl
+  type    = "A"
 
-  records = [var.squarespace_cname_target]
+  alias {
+    name                   = var.nelskin_redirect_cloudfront_domain_name
+    zone_id                = "Z2FDTNDATAQYW2"
+    evaluate_target_health = false
+  }
 }
+
+resource "aws_route53_record" "nelskin_redirect_root_ipv6" {
+  zone_id = data.aws_route53_zone.nelskin_zone.zone_id
+  name    = data.aws_route53_zone.nelskin_zone.name
+  type    = "AAAA"
+
+  alias {
+    name                   = var.nelskin_redirect_cloudfront_domain_name
+    zone_id                = "Z2FDTNDATAQYW2"
+    evaluate_target_health = false
+  }
+}
+
+resource "aws_route53_record" "nelskin_redirect_www_ipv6" {
+  zone_id = data.aws_route53_zone.nelskin_zone.zone_id
+  name    = "www.${data.aws_route53_zone.nelskin_zone.name}"
+  type    = "AAAA"
+
+  alias {
+    name                   = var.nelskin_redirect_cloudfront_domain_name
+    zone_id                = "Z2FDTNDATAQYW2"
+    evaluate_target_health = false
+  }
+}
+
 # ============================================================================
 # CloudFront Configuration for nelskincare.co.za
 # ============================================================================
@@ -45,7 +79,7 @@ resource "aws_route53_record" "nelskincare_root" {
 
   alias {
     name                   = var.cloudfront_distribution_domain_name
-    zone_id                = var.cloudfront_hosted_zone_id
+    zone_id                = "Z2FDTNDATAQYW2"
     evaluate_target_health = false
   }
 }
@@ -57,7 +91,7 @@ resource "aws_route53_record" "nelskincare_www" {
 
   alias {
     name                   = var.cloudfront_distribution_domain_name
-    zone_id                = var.cloudfront_hosted_zone_id
+    zone_id                = "Z2FDTNDATAQYW2"
     evaluate_target_health = false
   }
 }
@@ -69,7 +103,7 @@ resource "aws_route53_record" "nelskincare_root_ipv6" {
 
   alias {
     name                   = var.cloudfront_distribution_domain_name
-    zone_id                = var.cloudfront_hosted_zone_id
+    zone_id                = "Z2FDTNDATAQYW2"
     evaluate_target_health = false
   }
 }
@@ -81,7 +115,7 @@ resource "aws_route53_record" "nelskincare_www_ipv6" {
 
   alias {
     name                   = var.cloudfront_distribution_domain_name
-    zone_id                = var.cloudfront_hosted_zone_id
+    zone_id                = "Z2FDTNDATAQYW2"
     evaluate_target_health = false
   }
 }
