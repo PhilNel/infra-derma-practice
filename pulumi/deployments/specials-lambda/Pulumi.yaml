@@ -1,0 +1,3 @@
+name: specials-lambda
+runtime: go
+description: Lambda function for specials
